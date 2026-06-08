@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/language/{locale}', [\App\Http\Controllers\LanguageController::class, 'switch'])->name('language.switch');
 
 // Public Route (Landing Page)
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Guest-only Routes (Auth Forms)
 Route::middleware('guest')->group(function () {
@@ -26,6 +24,9 @@ Route::middleware('auth')->group(function () {
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    // Complaint Routes (General)
+    Route::get('/dashboard/complaints/{id}', [\App\Http\Controllers\ComplaintController::class, 'show'])->name('complaints.show');
+
     // Admin Dashboard Route
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard/admin', [DashboardController::class, 'admin'])->name('admin.dashboard');
@@ -39,5 +40,6 @@ Route::middleware('auth')->group(function () {
     // Masyarakat Dashboard Route
     Route::middleware('role:masyarakat')->group(function () {
         Route::get('/dashboard/user', [DashboardController::class, 'user'])->name('user.dashboard');
+        Route::post('/dashboard/complaints', [\App\Http\Controllers\ComplaintController::class, 'store'])->name('complaints.store');
     });
 });

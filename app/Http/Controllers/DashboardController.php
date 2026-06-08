@@ -68,6 +68,8 @@ class DashboardController extends Controller
             ->latest()
             ->get();
 
-        return view('dashboard.user', compact('stats', 'complaints'));
+        $categories = \App\Models\Category::all();
+
+        return view('dashboard.user', compact('stats', 'complaints', 'categories'));
     }
 }
