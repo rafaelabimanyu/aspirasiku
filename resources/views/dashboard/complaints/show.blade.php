@@ -3,116 +3,138 @@
 @section('title', __('messages.detail_complaint'))
 
 @section('content')
-<div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+<div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
     <!-- Header -->
-    <div class="mb-6 flex items-center justify-between">
-        <a href="{{ url()->previous() }}" class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors">
-            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            {{ __('messages.back') }}
+    <div class="mb-10 flex items-center justify-between">
+        <a href="{{ url()->previous() }}" class="group inline-flex items-center justify-center w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-md transition-all duration-300">
+            <svg class="w-5 h-5 text-slate-400 group-hover:text-blue-600 group-hover:-translate-x-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
         </a>
-        <h1 class="text-2xl font-bold text-slate-900">{{ __('messages.detail_complaint') }}</h1>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <!-- Content Area -->
-        <div class="p-6 sm:p-8 border-b border-slate-100">
-            <div class="flex flex-wrap items-center gap-3 mb-4">
-                <span class="px-3 py-1 rounded-md text-xs font-semibold bg-blue-50 text-blue-700 uppercase tracking-wider">
+    <!-- Main Content Card -->
+    <div class="bg-white/80 backdrop-blur-2xl rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-white overflow-hidden">
+        <div class="p-8 sm:p-12">
+            <!-- Badges & Meta -->
+            <div class="flex flex-wrap items-center gap-4 mb-8">
+                <span class="px-4 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-50 text-slate-500 border border-slate-200">
                     {{ $complaint->category->name }}
                 </span>
-                <span class="text-sm text-slate-500 flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                <span class="text-sm font-medium text-slate-500">
                     {{ $complaint->complaint_date->format('d M Y, H:i') }}
                 </span>
                 
                 @if($complaint->is_private)
-                    <span class="text-sm text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-md font-medium flex items-center gap-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                    <span class="text-sm text-amber-500 font-semibold flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                         Laporan Privat
                     </span>
                 @endif
             </div>
 
-            <h2 class="text-2xl font-extrabold text-slate-900 mb-4">{{ $complaint->title }}</h2>
-            
-            <div class="prose prose-slate max-w-none text-slate-700">
+            <!-- Title & Content -->
+            <h1 class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight mb-6">{{ $complaint->title }}</h1>
+            <div class="prose prose-lg prose-slate max-w-none text-slate-600 leading-relaxed mb-10">
                 <p class="whitespace-pre-wrap">{{ $complaint->content }}</p>
             </div>
 
+            <!-- Attachment -->
             @if($complaint->attachment)
-                <div class="mt-6">
-                    <h4 class="text-sm font-semibold text-slate-900 mb-3">Lampiran Bukti</h4>
-                    <a href="{{ asset('storage/' . $complaint->attachment) }}" target="_blank" class="block w-full sm:w-1/2 md:w-1/3 rounded-xl overflow-hidden border border-slate-200 hover:opacity-90 hover:shadow-md transition-all">
-                        <img src="{{ asset('storage/' . $complaint->attachment) }}" alt="Lampiran" class="w-full h-auto object-cover">
+                <div class="mt-8 rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 p-2 sm:p-4 inline-block max-w-full">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 px-2">Lampiran Bukti</p>
+                    <a href="{{ asset('storage/' . $complaint->attachment) }}" target="_blank" class="block rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <img src="{{ asset('storage/' . $complaint->attachment) }}" alt="Lampiran" class="max-w-full h-auto max-h-96 object-contain">
                     </a>
                 </div>
             @endif
         </div>
 
-        <!-- Timeline Section -->
-        <div class="bg-slate-50 p-6 sm:p-8">
-            <h3 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                {{ __('messages.complaint_timeline') }}
-            </h3>
+        <!-- iOS/macOS Minimalist Timeline -->
+        <div class="bg-slate-50/50 p-8 sm:p-12 border-t border-slate-100">
+            <h3 class="text-[11px] font-extrabold text-slate-400 uppercase tracking-widest mb-8">{{ __('messages.complaint_timeline') }}</h3>
 
-            <div class="relative border-l-2 border-slate-200 ml-3 md:ml-4 space-y-8">
+            <div class="relative max-w-2xl">
+                <!-- Vertical Line (Very thin) -->
+                <div class="absolute left-3 top-2 bottom-2 w-px bg-slate-200 rounded-full"></div>
                 
-                <!-- 1. Pending (Diterima) -->
-                <div class="relative pl-8">
-                    <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full border-2 {{ in_array($complaint->status, ['pending', 'process', 'resolved']) ? 'bg-blue-600 border-blue-600' : 'bg-white border-slate-300' }}"></div>
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
-                        <div>
-                            <h4 class="text-base font-bold text-slate-900">{{ __('messages.timeline_pending') }}</h4>
-                            <p class="text-sm text-slate-600 mt-1">{{ __('messages.timeline_pending_desc') }}</p>
+                <div class="space-y-10 relative">
+                    <!-- 1. Diterima -->
+                    <div class="flex gap-6 group">
+                        <div class="relative z-10 flex-shrink-0 mt-1">
+                            <div class="w-6 h-6 rounded-full border-[3px] flex items-center justify-center {{ in_array($complaint->status, ['pending', 'process', 'resolved']) ? 'bg-white border-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.4)]' : 'bg-slate-50 border-slate-300' }} transition-all duration-500">
+                                @if(in_array($complaint->status, ['pending', 'process', 'resolved']))
+                                    <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                                @endif
+                            </div>
                         </div>
-                        <span class="text-xs font-medium text-slate-500 mt-2 sm:mt-0">{{ $complaint->complaint_date->format('d M Y, H:i') }}</span>
-                    </div>
-                </div>
-
-                <!-- 2. Proses -->
-                <div class="relative pl-8">
-                    <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full border-2 {{ in_array($complaint->status, ['process', 'resolved']) ? 'bg-amber-500 border-amber-500' : 'bg-white border-slate-300' }}"></div>
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
-                        <div>
-                            <h4 class="text-base font-bold {{ in_array($complaint->status, ['process', 'resolved']) ? 'text-slate-900' : 'text-slate-400' }}">{{ __('messages.timeline_process') }}</h4>
-                            <p class="text-sm {{ in_array($complaint->status, ['process', 'resolved']) ? 'text-slate-600' : 'text-slate-400' }} mt-1">{{ __('messages.timeline_process_desc') }}</p>
+                        <div class="flex-1 pb-1">
+                            <div class="flex items-center justify-between mb-1">
+                                <h4 class="text-base font-bold text-slate-800">{{ __('messages.timeline_pending') }}</h4>
+                                <span class="text-[11px] font-semibold text-slate-400">{{ $complaint->complaint_date->format('d M, H:i') }}</span>
+                            </div>
+                            <p class="text-sm text-slate-500 leading-relaxed">{{ __('messages.timeline_pending_desc') }}</p>
                         </div>
                     </div>
-                </div>
 
-                <!-- 3. Selesai (Tanggapan) -->
-                <div class="relative pl-8">
-                    <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full border-2 {{ $complaint->status == 'resolved' ? 'bg-emerald-500 border-emerald-500' : 'bg-white border-slate-300' }}"></div>
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
-                        <div class="w-full">
-                            <h4 class="text-base font-bold {{ $complaint->status == 'resolved' ? 'text-slate-900' : 'text-slate-400' }}">{{ __('messages.timeline_resolved') }}</h4>
-                            <p class="text-sm {{ $complaint->status == 'resolved' ? 'text-slate-600' : 'text-slate-400' }} mt-1">{{ __('messages.timeline_resolved_desc') }}</p>
+                    <!-- 2. Diproses -->
+                    <div class="flex gap-6 group">
+                        <div class="relative z-10 flex-shrink-0 mt-1">
+                            <div class="w-6 h-6 rounded-full border-[3px] flex items-center justify-center {{ in_array($complaint->status, ['process', 'resolved']) ? 'bg-white border-amber-500 shadow-[0_0_12px_rgba(245,158,11,0.4)]' : 'bg-slate-50 border-slate-200' }} transition-all duration-500">
+                                @if(in_array($complaint->status, ['process', 'resolved']))
+                                    <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="flex-1 pb-1">
+                            <h4 class="text-base font-bold {{ in_array($complaint->status, ['process', 'resolved']) ? 'text-slate-800' : 'text-slate-400' }} mb-1">{{ __('messages.timeline_process') }}</h4>
+                            <p class="text-sm {{ in_array($complaint->status, ['process', 'resolved']) ? 'text-slate-500' : 'text-slate-400' }} leading-relaxed">{{ __('messages.timeline_process_desc') }}</p>
+                        </div>
+                    </div>
+
+                    <!-- 3. Selesai & Tanggapan -->
+                    <div class="flex gap-6 group">
+                        <div class="relative z-10 flex-shrink-0 mt-1">
+                            <div class="w-6 h-6 rounded-full border-[3px] flex items-center justify-center {{ $complaint->status == 'resolved' ? 'bg-white border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.4)]' : 'bg-slate-50 border-slate-200' }} transition-all duration-500">
+                                @if($complaint->status == 'resolved')
+                                    <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="flex-1 pb-1">
+                            <h4 class="text-base font-bold {{ $complaint->status == 'resolved' ? 'text-slate-800' : 'text-slate-400' }} mb-1">{{ __('messages.timeline_resolved') }}</h4>
+                            <p class="text-sm {{ $complaint->status == 'resolved' ? 'text-slate-500' : 'text-slate-400' }} leading-relaxed">{{ __('messages.timeline_resolved_desc') }}</p>
                             
                             @if($complaint->response)
-                                <div class="mt-4 bg-white border border-slate-200 rounded-xl p-4 shadow-sm relative">
-                                    <!-- Triangle pointer -->
-                                    <div class="absolute -top-2 left-6 w-4 h-4 bg-white border-t border-l border-slate-200 transform rotate-45"></div>
+                                <!-- Mac OS Style Message Bubble -->
+                                <div class="mt-6 bg-white border border-slate-100 rounded-[1.25rem] p-6 shadow-[0_10px_30px_rgba(0,0,0,0.03)] relative animate-[slideDown_0.5s_ease-out_forwards]">
+                                    <!-- Tail of the bubble -->
+                                    <div class="absolute -top-2.5 left-8 w-5 h-5 bg-white border-t border-l border-slate-100 transform rotate-45"></div>
                                     
-                                    <div class="flex items-center gap-2 mb-2">
-                                        <div class="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs">
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div class="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-xs">
                                             {{ substr($complaint->response->user->name, 0, 1) }}
                                         </div>
-                                        <span class="text-sm font-semibold text-slate-800">{{ $complaint->response->user->name }}</span>
-                                        <span class="text-xs text-slate-500 px-2 py-0.5 rounded bg-slate-100">{{ $complaint->response->user->role }}</span>
+                                        <div>
+                                            <span class="block text-sm font-bold text-slate-800">{{ $complaint->response->user->name }}</span>
+                                            <span class="block text-[10px] font-bold text-emerald-600 uppercase tracking-widest mt-0.5">{{ $complaint->response->user->role }}</span>
+                                        </div>
+                                        <div class="ml-auto text-[11px] font-semibold text-slate-400">
+                                            {{ $complaint->response->response_date->format('d M, H:i') }}
+                                        </div>
                                     </div>
-                                    <p class="text-sm text-slate-700 whitespace-pre-wrap">{{ $complaint->response->content }}</p>
-                                    <p class="text-xs text-slate-400 mt-3">{{ $complaint->response->response_date->format('d M Y, H:i') }}</p>
+                                    <div class="text-sm text-slate-600 leading-relaxed bg-slate-50/50 p-4 rounded-xl border border-slate-50">
+                                        <p class="whitespace-pre-wrap">{{ $complaint->response->content }}</p>
+                                    </div>
                                 </div>
                             @elseif($complaint->status == 'resolved')
-                                <div class="mt-4 p-4 bg-slate-100 rounded-lg text-sm text-slate-500 italic">
+                                <div class="mt-5 px-5 py-4 bg-white rounded-2xl text-sm font-medium text-slate-400 italic border border-slate-100/50 shadow-sm">
                                     {{ __('messages.no_response_yet') }}
                                 </div>
                             @endif
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
